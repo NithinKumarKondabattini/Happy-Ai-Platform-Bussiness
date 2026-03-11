@@ -7,7 +7,9 @@ services:
     startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        value: sqlite:///./ai_bi.db
+        value: sqlite:////tmp/ai_bi.db
+      - key: APP_DATA_DIR
+        value: /tmp/happy-ai-data
       - key: SECRET_KEY
         generateValue: true
       - key: OPENAI_API_KEY

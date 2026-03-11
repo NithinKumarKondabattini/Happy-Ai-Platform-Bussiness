@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -25,6 +27,13 @@ class Settings(BaseSettings):
     s3_bucket_name: str = ''
 
     excel_base_path: str = ''
+    app_data_dir: str = ''
+
+    @property
+    def resolved_app_data_dir(self) -> Path:
+        if self.app_data_dir.strip():
+            return Path(self.app_data_dir).expanduser()
+        return Path.cwd()
 
 
 settings = Settings()

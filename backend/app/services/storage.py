@@ -1,14 +1,20 @@
 from datetime import datetime
 from pathlib import Path
+
 import boto3
 from botocore.exceptions import BotoCoreError
+
 from app.core.config import settings
 
 
-def save_contract_file(file_name: str, data: bytes) -> str:
-    uploads = Path("uploads")
+def _uploads_dir() -> Path:
+    uploads = settings.resolved_app_data_dir / "uploads"
     uploads.mkdir(parents=True, exist_ok=True)
-    local_path = uploads / f"{datetime.utcnow().timestamp()}_{file_name}"
+    return uploads
+
+
+def save_contract_file(file_name: str, data: bytes) -> str:
+    local_path = _uploads_dir() / f"{datetime.utcnow().timestamp()}_{file_name}"
     local_path.write_bytes(data)
 
     if not settings.s3_bucket_name:

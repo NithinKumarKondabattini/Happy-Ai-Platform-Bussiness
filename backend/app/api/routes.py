@@ -20,6 +20,7 @@ from app.ai.ai_dashboard import generate_dashboard_widgets
 from app.ai.ai_market_research import generate_market_research
 from app.ai.ai_reports import build_report_content
 from app.ai.ai_startup_validator import analyze_startup_idea
+from app.core.config import settings
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db import get_db
 from app.deps import get_current_user
@@ -223,7 +224,7 @@ def download_report(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    reports_dir = Path("reports")
+    reports_dir = settings.resolved_app_data_dir / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
 
@@ -311,3 +312,4 @@ def profile(current_user: User = Depends(get_current_user), db: Session = Depend
         "uploaded_contracts": [{"file": c.file_name, "risk_score": c.risk_score, "created_at": str(c.created_at)} for c in contracts],
         "generated_reports": [{"type": r.report_type, "format": r.file_format, "path": r.file_path, "created_at": str(r.created_at)} for r in reports],
     }
+

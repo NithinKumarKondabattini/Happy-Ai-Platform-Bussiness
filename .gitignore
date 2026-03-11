@@ -1,0 +1,19 @@
+# Frontend
+node_modules/
+.next/
+
+# Backend
+__pycache__/
+*.pyc
+.venv/
+backend/uploads/
+backend/reports/
+
+# Env
+.env
+frontend/.env.local
+backend/.env
+
+# Local tooling
+.codex/
+*.log
